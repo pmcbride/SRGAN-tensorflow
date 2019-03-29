@@ -12,6 +12,7 @@ import time
 import numpy as np
 
 Flags = tf.app.flags
+os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
 # The system parameter
 Flags.DEFINE_string('output_dir', None, 'The output directory of the checkpoint')
@@ -307,7 +308,10 @@ elif FLAGS.mode == 'train':
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
     # Use superviser to coordinate all queue and summary writer
+    # DEPRECATED: 
     sv = tf.train.Supervisor(logdir=FLAGS.summary_dir, save_summaries_secs=0, saver=None)
+#     sv = tf.train.MonitoredTrainingSession(checkpoint_dir=FLAGS.summary_dir, save_summaries_secs=0, save_checkpoint_secs=None)
+
     with sv.managed_session(config=config) as sess:
         if (FLAGS.checkpoint is not None) and (FLAGS.pre_trained_model is False):
             print('Loading model from the checkpoint...')

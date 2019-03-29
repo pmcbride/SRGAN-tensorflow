@@ -331,10 +331,19 @@ def discriminator(dis_inputs, FLAGS=None):
 
 def VGG19_slim(input, type, reuse, scope):
     # Define the feature to extract according to the type of perceptual
+    print("Calling VGG19_slim...")
+    print("input: {}".format(input))
+    print("type: {}".format(type))
+    print("reuse: {}".format(reuse))
+    print("scope: {}".format(scope))
+    print("Begin VGG19_slim...")
+    
     if type == 'VGG54':
-        target_layer = scope + 'vgg_19/conv5/conv5_4'
+#         target_layer = scope + 'vgg_19/conv5/conv5_4'
+        target_layer = 'vgg_19/conv5/conv5_4'
     elif type == 'VGG22':
-        target_layer = scope + 'vgg_19/conv2/conv2_2'
+#         target_layer = scope + 'vgg_19/conv2/conv2_2'
+        target_layer = 'vgg_19/conv2/conv2_2'
     else:
         raise NotImplementedError('Unknown perceptual type')
     _, output = vgg_19(input, is_training=False, reuse=reuse)
@@ -415,7 +424,8 @@ def SRGAN(inputs, targets, FLAGS):
 
     # Define the learning rate and global step
     with tf.variable_scope('get_learning_rate_and_global_step'):
-        global_step = tf.contrib.framework.get_or_create_global_step()
+        # DEPRECATED: global_step = tf.contrib.framework.get_or_create_global_step()
+        global_step = tf.train.get_or_create_global_step()
         learning_rate = tf.train.exponential_decay(FLAGS.learning_rate, global_step, FLAGS.decay_step, FLAGS.decay_rate, staircase=FLAGS.stair)
         incr_global_step = tf.assign(global_step, global_step + 1)
 
@@ -499,7 +509,9 @@ def SRResnet(inputs, targets, FLAGS):
 
     # Define the learning rate and global step
     with tf.variable_scope('get_learning_rate_and_global_step'):
-        global_step = tf.contrib.framework.get_or_create_global_step()
+        # DEPRECATED: global_step = tf.contrib.framework.get_or_create_global_step()
+        global_step = tf.train.get_or_create_global_step()
+
         learning_rate = tf.train.exponential_decay(FLAGS.learning_rate, global_step, FLAGS.decay_step, FLAGS.decay_rate,
                                                    staircase=FLAGS.stair)
         incr_global_step = tf.assign(global_step, global_step + 1)
