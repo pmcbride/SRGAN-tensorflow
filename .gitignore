@@ -9,5 +9,8 @@ experiment_SRResnet/
 experiment_SRResnet/log/
 SRGAN_pre-trained/
 vgg19/
-result/
+result*/
+data/
 .idea/
+.ipynb_checkpoints/
+exp*/
